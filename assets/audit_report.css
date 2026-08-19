@@ -1,0 +1,47 @@
+.audit-summary-card {
+    min-height: 138px;
+    background: #fafafa;
+    border: 1px solid #e9e9ee;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.audit-export-card {
+    margin-bottom: 12px;
+}
+
+.audit-summary-title {
+    font-weight: 800;
+    font-size: 1rem;
+    color: #2f3441;
+    margin-bottom: 14px;
+}
+
+.audit-summary-content {
+    font-size: 0.97rem;
+    line-height: 1.75;
+    word-break: break-word;
+    white-space: normal;
+}
+
+.audit-summary-danger {
+    color: #c62828;
+}
+
+.audit-summary-primary {
+    color: #1a237e;
+}
+
+.audit-summary-muted {
+    color: #5f6472;
+}
+
+div[data-testid="stDownloadButton"] > button {
+    min-height: 52px;
+    border-radius: 12px;
+    font-weight: 700;
+}

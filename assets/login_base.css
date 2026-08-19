@@ -1,0 +1,69 @@
+﻿.stApp {background: #ffffff !important;}
+[data-testid="stHeader"] {visibility: hidden !important; height: 0 !important; min-height: 0 !important;}
+[data-testid="stToolbar"] {visibility: hidden !important; height: 0 !important; min-height: 0 !important;}
+section[data-testid="stSidebar"] {display: none !important;}
+.main .block-container {padding-top: 1.5rem !important; max-width: 920px;}
+@keyframes loginBoltRise {
+    0% { transform: translate(-50%, 48px) scaleY(0.25); opacity: 0; }
+    12% { opacity: 1; }
+    100% { transform: translate(-50%, -36px) scaleY(1.15); opacity: 0; }
+}
+@keyframes loginBoltRise2 {
+    0% { transform: translate(-50%, 52px) scaleY(0.2); opacity: 0; }
+    15% { opacity: 0.85; }
+    100% { transform: translate(-50%, -42px) scaleY(1); opacity: 0; }
+}
+@keyframes loginShieldPulse {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(107,102,204,0.45)); transform: scale(1); }
+    50% { filter: drop-shadow(0 0 22px rgba(124,110,255,0.95)); transform: scale(1.04); }
+}
+/* 隐藏旧登录页动画元素 */
+.login-hero-wrap, .login-hero-inner, .login-bolt-beam, .login-shield-layer, .login-hero-core-bolt {
+    display: none !important;
+}
+.login-hero-inner {
+    position: relative; width: 108px; height: 108px; margin: 0 auto;
+}
+.login-bolt-beam {
+    position: absolute; left: 50%; bottom: 6px; width: 10px; height: 88px; margin-left: -5px;
+    background: linear-gradient(180deg,
+        transparent 0%, rgba(255,235,59,0.25) 15%, #ffeb3b 40%, #fff9c4 55%, rgba(255,213,79,0.6) 75%, transparent 100%);
+    border-radius: 5px; z-index: 1; pointer-events: none;
+    animation: loginBoltRise 2.1s ease-in-out infinite;
+    box-shadow: 0 0 16px rgba(255,193,7,0.75);
+}
+.login-bolt-beam.login-bolt-beam--2 {
+    width: 5px; margin-left: 2px; opacity: 0.85;
+    animation: loginBoltRise2 2.1s ease-in-out infinite; animation-delay: 1.05s;
+}
+.login-shield-layer {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 2;
+    animation: loginShieldPulse 2.8s ease-in-out infinite;
+}
+.login-shield-layer svg { display: block; }
+.login-hero-core-bolt {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -52%);
+    font-size: 26px; filter: drop-shadow(0 0 6px rgba(255,152,0,0.9)); z-index: 3;
+    animation: loginShieldPulse 2.8s ease-in-out infinite;
+}
+form[data-testid="stForm"] {
+    border: 1px solid #eceef2; border-radius: 16px; background: #fff;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+    padding: 20px 28px 24px; margin-top: 0;
+}
+form[data-testid="stForm"] button[kind="primary"] {
+    width: 100% !important; border: none;
+    background: linear-gradient(135deg, #4a6cf7 0%, #6B66CC 100%) !important;
+    color: #fff !important; font-weight: 600; border-radius: 10px;
+    font-size: 1rem !important; padding: 13px !important;
+    transition: all 0.3s ease !important;
+    letter-spacing: 2px;
+}
+form[data-testid="stForm"] button[kind="primary"]:hover {
+    background: linear-gradient(135deg, #3b5ce7 0%, #5a57b8 100%) !important;
+    box-shadow: 0 4px 15px rgba(107, 102, 204, 0.4) !important;
+    transform: translateY(-1px) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    .login-bolt-beam, .login-shield-layer, .login-hero-core-bolt { animation: none !important; }
+}

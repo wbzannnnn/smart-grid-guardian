@@ -1,0 +1,26 @@
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(180deg, #4a6cf7, #6b66cc);
+    border-radius: 2px;
+}
+
+.spec-box {
+    background: linear-gradient(135deg, #667eea08, #764ba208);
+    border: 1px solid #667eea30;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #444;
+    font-size: 0.9rem;
+}
