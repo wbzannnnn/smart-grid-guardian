@@ -2337,6 +2337,7 @@ if st.session_state.authenticated:
             agent_debate_system_cls=AgentDebateSystem,
             api_key=st.session_state.get("api_key") or DEEPSEEK_API_KEY or "",
             api_base_url=DEEPSEEK_BASE_URL,
+            model_name=MODEL_NAME,
             save_audit_record=save_audit_record,
             generate_alarm_from_audit=generate_alarm_from_audit,
             generate_audit_report_pdf=generate_audit_report_pdf,
