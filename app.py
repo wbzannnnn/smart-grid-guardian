@@ -1472,8 +1472,10 @@ def _read_secret(name: str, default: str = "") -> str:
     return str(value or "").strip()
 
 
-DEEPSEEK_BASE_URL = _read_secret("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")
-MODEL_NAME = _read_secret("MODEL_NAME", "deepseek-chat")
+DEEPSEEK_BASE_URL = _read_secret("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
+MODEL_NAME = _read_secret("MODEL_NAME", "deepseek-v4-pro")
+DEEPSEEK_THINKING = _read_secret("DEEPSEEK_THINKING", "disabled").lower()
+LLM_FINAL_DECISION = _read_secret("LLM_FINAL_DECISION", "false").lower() in {"true", "1", "yes", "on"}
 DEEPSEEK_API_KEY = _read_secret("DEEPSEEK_API_KEY")
 
 # 演示登录（可按需修改）
@@ -1828,14 +1830,18 @@ class PowerStationAgent:
 
     def _get_llm(self):
         if self._llm is None:
-            self._llm = ChatOpenAI(
-                model=self.model,
-                openai_api_key=self.api_key,
-                openai_api_base=self.base_url,
-                temperature=0.2,
-                max_tokens=260,
-                timeout=12,
-            )
+            llm_kwargs = {
+                "model": self.model,
+                "openai_api_key": self.api_key,
+                "openai_api_base": self.base_url,
+                "temperature": 0.2,
+                "max_tokens": 260,
+                "timeout": 20,
+                "max_retries": 0,
+            }
+            if DEEPSEEK_THINKING in {"disabled", "off", "false", "0"}:
+                llm_kwargs["extra_body"] = {"thinking": {"type": "disabled"}}
+            self._llm = ChatOpenAI(**llm_kwargs)
         return self._llm
 
     def run(self, user_input: str, context: Optional[Dict] = None) -> str:
@@ -2288,7 +2294,15 @@ class AgentDebateSystem:
 - 标准顺序识别：{"；".join(tool_summary['matched_patterns']) if tool_summary['matched_patterns'] else "未命中明确标准顺序"}
 注意：模拟 SCADA 仅作参考，不能单独作为 DENY 依据。
 请给出最终决策。"""
-            results["decision"] = self.agents["decision"].run(debate_summary, shared_ctx)
+            agent_outputs = [results.get("auditor", ""), results.get("red", ""), results.get("blue", ""), results.get("expert", "")]
+            all_agents_failed = agent_outputs and all(str(item).startswith("[") for item in agent_outputs)
+            if all_agents_failed or not LLM_FINAL_DECISION:
+                results["decision"] = (
+                    "决策：DENY\n风险等级：MEDIUM\n置信度：80\n"
+                    "违反规则：[以本地规则校验为准]\n建议措施：[按规则校验结果执行]"
+                )
+            else:
+                results["decision"] = self.agents["decision"].run(debate_summary, shared_ctx)
             results["tool_summary"] = tool_summary
             results["decision_raw"] = results["decision"]
             parsed = self._parse_decision_output(results["decision"])
@@ -2380,4 +2394,3 @@ st.markdown(
     f"<div style='text-align: center; color: #999; padding: 20px;'><p>智电卫士 | 框架：LangChain + Streamlit &nbsp;版本：{APP_VERSION} &nbsp;最后更新：{LAST_UPDATE}</p></div>",
     unsafe_allow_html=True,
 )
-

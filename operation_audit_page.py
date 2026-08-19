@@ -1,4 +1,4 @@
-import html
+﻿import html
 from datetime import datetime
 import traceback
 
@@ -13,6 +13,7 @@ def render_operation_audit_page(
     agent_debate_system_cls,
     api_key: str,
     api_base_url: str,
+    model_name: str,
     save_audit_record,
     generate_alarm_from_audit,
     generate_audit_report_pdf,
@@ -52,7 +53,7 @@ def render_operation_audit_page(
         if st.button("🚀 开始智能审核", type="primary", use_container_width=True, key="btn_run_audit"):
             if user_command and user_command.strip():
                 try:
-                    with st.spinner("🧠 多智能体协同博弈审核中，请稍候..."):
+                    with st.spinner("🧠 多智能体协同审核中，通常需要 10–30 秒，请稍候..."):
                         kb = get_kb()
                         rag_results = kb.search(user_command.strip(), top_k=2, use_llm_embed=False)
                         rag_context = "\n\n".join([
@@ -63,6 +64,7 @@ def render_operation_audit_page(
                         debate_system = agent_debate_system_cls(
                             api_key=api_key,
                             base_url=api_base_url,
+                            model=model_name,
                             rag_kb=kb,
                         )
                         audit_id = f"AUDIT-{datetime.now().strftime('%Y%m%d%H%M%S%f')}"

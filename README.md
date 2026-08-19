@@ -50,8 +50,10 @@ streamlit run app.py
 
 ```toml
 DEEPSEEK_API_KEY = "新建的 DeepSeek API Key"
-DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"
-MODEL_NAME = "deepseek-chat"
+DEEPSEEK_BASE_URL = "https://api.deepseek.com"
+MODEL_NAME = "deepseek-v4-pro"
+DEEPSEEK_THINKING = "disabled"
+LLM_FINAL_DECISION = "false"
 ```
 
 5. 点击 Deploy，等待生成 `https://*.streamlit.app` 公开链接。
